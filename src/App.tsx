@@ -27,7 +27,9 @@ class Counter extends Component<CounterProps, CounterState> {
         return true;
     }
 
-    handleClick = () => {
+    handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+        e.preventDefault();
+
         this.setState({
             count: this.state.count + 1,
         });
@@ -41,6 +43,9 @@ class Counter extends Component<CounterProps, CounterState> {
                     {this.state.count}
                 </h1>
                 <button onClick={this.handleClick}>+1</button>
+                <a href="/" onClick={this.handleClick}>
+                    +1
+                </a>
             </>
         );
     }

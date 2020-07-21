@@ -1,1 +1,1 @@
-Typing of Class Components
+Typing of Events
