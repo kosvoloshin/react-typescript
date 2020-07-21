@@ -1,56 +1,123 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
-type CounterProps = {
-    readonly title?: string;
+type Position = {
+    id: string;
+    value: string;
+    title: string;
 };
 
-type CounterState = {
-    count: number;
+type FormState = {
+    inputText: string;
+    textareaText: string;
+    selectText: string;
+    showData: {
+        name: string;
+        text: string;
+        position: string;
+    };
 };
 
-class Counter extends Component<CounterProps, CounterState> {
+const POSITIONS: Array<Position> = [
+    {
+        id: "fd",
+        value: "front",
+        title: "front",
+    },
+    {
+        id: "bd",
+        value: "back",
+        title: "back",
+    },
+];
+
+const DEFAULT_SELECT_VALUE: string = POSITIONS[0].value;
+
+const styles: React.CSSProperties = { display: "block", marginBottom: "10px" };
+class Form extends Component<{}, FormState> {
     state = {
-        count: 0,
+        inputText: "",
+        textareaText: "",
+        selectText: DEFAULT_SELECT_VALUE,
+        showData: {
+            name: "",
+            text: "",
+            position: "",
+        },
     };
 
-    static defaultProps: CounterProps = {
-        title: "Default Counter: ",
+    private rootRef = React.createRef<HTMLSelectElement>();
+
+    handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const {
+            target: { value: inputText },
+        } = e;
+        this.setState({ inputText });
     };
 
-    static getDeriverStateFromProps(props: CounterProps, state: CounterState): CounterState | null {
-        return false ? { count: 2 } : null;
-    }
+    handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
+        const {
+            target: { value: textareaText },
+        } = e;
+        this.setState({ textareaText });
+    };
 
-    componentDidMount(): void {}
+    handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+        const {
+            target: { value: selectText },
+        } = e;
+        this.setState({ selectText });
+    };
 
-    shouldComponentUpdate(nextProps: CounterProps, nextState: CounterState): boolean {
-        return true;
-    }
-
-    handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    handleShow = (e: React.MouseEvent<HTMLButtonElement>): void => {
         e.preventDefault();
-
+        const { inputText, textareaText, selectText } = this.state;
         this.setState({
-            count: this.state.count + 1,
+            inputText: "",
+            textareaText: "",
+            selectText: "",
+            showData: {
+                name: inputText,
+                text: textareaText,
+                position: selectText,
+            },
         });
     };
 
     render() {
+        const { inputText, textareaText, selectText, showData } = this.state;
+        const { name, text, position } = showData;
+
         return (
-            <>
-                <h1>
-                    {this.props.title}
-                    {this.state.count}
-                </h1>
-                <button onClick={this.handleClick}>+1</button>
-                <a href="/" onClick={this.handleClick}>
-                    +1
-                </a>
-            </>
+            <Fragment>
+                <form>
+                    {/* Input */}
+                    <label>
+                        Name:
+                        <input type="text" name="name" value={inputText} onChange={this.handleInputChange} />
+                    </label>
+                    {/* Textarea */}
+                    <br />
+                    <label htmlFor="text">Text:</label>
+                    <textarea id="text" value={textareaText} onChange={this.handleTextareaChange} />
+                    {/* Select */}
+                    <select ref={this.rootRef} value={selectText} onChange={this.handleSelectChange}>
+                        {POSITIONS.map(({ id, value, title }) => (
+                            <option key={id} value={value}>
+                                {title}
+                            </option>
+                        ))}
+                    </select>
+                    {/* Button */} <br />
+                    <button onClick={this.handleShow}>Show</button>
+                </form>
+                <h2>{name}</h2>
+                <h3>{text}</h3>
+                <h3>{position}</h3>
+            </Fragment>
         );
     }
 }
 
-const App = () => <Counter />;
+const App = () => <Form />;
 
 export default App;

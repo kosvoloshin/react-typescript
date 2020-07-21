@@ -1,1 +1,1 @@
-Typing of Events
+Typing of Elements
