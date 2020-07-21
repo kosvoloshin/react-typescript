@@ -1,1 +1,1 @@
-Typing of Elements
+Typing of Context & Portal
