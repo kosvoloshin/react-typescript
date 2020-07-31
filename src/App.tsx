@@ -1,63 +1,61 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React, { Component, useState, useRef, useReducer } from "react";
 
-type PortalProps = {
-    children: React.ReactNode;
-};
+/* ------ useState ------ */
+// 1 example
+// const [value, setValue] = useState(0);
 
-class Portal extends Component<PortalProps> {
-    private el: HTMLDivElement = document.createElement("div");
+// 2 example
+// const [value, setValue] = useState<number | undefined>(undefined);
+// const [value, setValue] = useState<Array<number>>([]);
 
-    public componentDidMount(): void {
-        document.body.appendChild(this.el);
-    }
+// 3 example
+// interface IUser {
+//   name: string;
+//   age?: number;
+// }
 
-    public componentWillUnmount(): void {
-        document.body.removeChild(this.el);
-    }
+// const [value, setValue] = useState<IUser>({ name: "Max" });
 
-    public render(): React.ReactElement<PortalProps> {
-        return ReactDOM.createPortal(this.props.children, this.el);
-    }
-}
+/* ------ useRef ------ */
+
+// const ref1 = useRef<HTMLElement>(null!);
+// const ref2 = useRef<HTMLElement | null>(null);
+
+/* ------ useContext ------ */
+
+// interface ITheme {
+//   backgroundColor: string;
+//   color: string;
+// }
+
+// // Context creation
+// const ThemeContext = createContext<ITheme>(ThemeContext);
+
+/* ------ useReducer ------ */
+
+// interface State {
+//   count: number;
+// }
+
+// type Action = { type: "increment" | "decrement" }
+
+// const counterReducer = ({ count }: State, { type }: Action) => {
+//   switch (type) {
+//     case "increment": return { count: count + 1 };
+//     case "decrement": return { count: count - 1 };
+//     default: return {};
+//   }
+// }
+
+// const [state, dispatch] = useReducer(counterReducer, { count: 0 });
+
+// dispatch({ type: "increment" });
+// dispatch({ type: "decrement" });
 
 const App = () => (
     <>
         <div>this is root</div>
-        <Portal>
-            <h2>this is portal</h2>
-        </Portal>
     </>
 );
-
-/*
-interface IContext {
-  isAuth: Boolean,
-  toggleAuth: () => void,
-}
-
-// Context creation
-const AuthContext = React.createContext<IContext>({
-  isAuth: false,
-  toggleAuth: () => {},
-});
-
-// Inner component (new syntax of static property)
-class Login extends Component {
-
-  static contextType = AuthContext;
-  context!: React.ContextType<typeof AuthContext>
-
-  render() {
-    const { toggleAuth, isAuth } = this.context;
-
-    return (
-      <button onClick={toggleAuth}>
-        {!isAuth ? 'Login' : 'Logout'}
-      </button>
-    );
-  }
-}
-*/
 
 export default App;
