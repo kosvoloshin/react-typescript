@@ -1,1 +1,1 @@
-Typing of Hooks
+Typing of HOCs
